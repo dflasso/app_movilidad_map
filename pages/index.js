@@ -11,10 +11,11 @@ const currentPositionInit = {
 
 export default function Home({ destinationLatitude = -0.31435138796969286, destinationLongitude = -78.4449847658831 }) {
 
-  const [currentPosition, setCurrentPosition] = useState(currentPositionInit)
+  const [currentPosition, setCurrentPosition] = useState(null)
 
   useEffect(() => {
     if ("geolocation" in navigator) {
+      console.log("Available");
       navigator.geolocation.getCurrentPosition(function (position) {
         setCurrentPosition({
           latitude: position.coords.latitude,
@@ -27,6 +28,18 @@ export default function Home({ destinationLatitude = -0.31435138796969286, desti
   }, [])
 
 
+  if (currentPosition == null) {
+    return (
+      <div className={styles.container}>
+        <Head>
+          <title>Espe Movilidad - Mapa</title>
+          <meta name="description" content="ESPE movilidad Arcgiss" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <h1>Cargando...</h1>
+      </div>
+    )
+  }
 
   return (
     <div className={styles.container}>
