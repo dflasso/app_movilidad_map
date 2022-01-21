@@ -11,29 +11,15 @@ const currentPositionInit = {
 
 export default function Home({ destinationLatitude = -0.31435138796969286, destinationLongitude = -78.4449847658831 }) {
 
-  const [currentPosition, setCurrentPosition] = useState(null)
+  const [geolocationAvailable, setGeolocationAvailable] = useState(false)
   const [refresh, setRefresh] = useState(false)
 
   useEffect(() => {
     const id = null
     if ("geolocation" in navigator) {
       console.log("Available");
-      navigator.geolocation.getCurrentPosition(function (position) {
-        setCurrentPosition({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        })
-      });
-      id = setInterval(() => {
-        console.log("calculo ubicación actual")
-        navigator.geolocation.getCurrentPosition(function (position) {
-          setCurrentPosition({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          })
-          setRefresh(preRefresh => !preRefresh)
-        });
-      }, 30000)
+      setGeolocationAvailable(true)
+
     } else {
       alert("Not Available Geolocation");
     }
@@ -44,7 +30,7 @@ export default function Home({ destinationLatitude = -0.31435138796969286, desti
   }, [])
 
 
-  if (currentPosition == null) {
+  if (!geolocationAvailable) {
     return (
       <div className={styles.container}>
         <Head>
@@ -68,9 +54,6 @@ export default function Home({ destinationLatitude = -0.31435138796969286, desti
       <EsriMap id="5b94a76b52a64049934210494aa2f6bb"
         destinationLatitude={destinationLatitude}
         destinationLongitude={destinationLongitude}
-        originLatitude={currentPosition.latitude}
-        originLongitude={currentPosition.longitude}
-        refresh={refresh}
       />
 
 
