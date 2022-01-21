@@ -15,6 +15,7 @@ export default function printMapVire(
 
         view.graphics.removeAll();
 
+        alert(`latitude: ${currentPosition.latitude}, longitude: ${currentPosition.longitude}`)
 
         const origin = new Point({ latitude: currentPosition.latitude, longitude: currentPosition.longitude })
         const graphicOrigin = new Graphic({
