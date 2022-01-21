@@ -15,9 +15,8 @@ export default function printMapVire(
 
         view.graphics.removeAll();
 
-        alert(`latitude: ${currentPosition.latitude}, longitude: ${currentPosition.longitude}`)
-
         const origin = new Point({ latitude: currentPosition.latitude, longitude: currentPosition.longitude })
+
         const graphicOrigin = new Graphic({
             symbol: {
                 type: "simple-marker",
@@ -26,6 +25,7 @@ export default function printMapVire(
             },
             geometry: origin
         });
+
         const destination = new Point({ latitude: destinationLatitude, longitude: destinationLongitude })
         const graphicDestination = new Graphic({
             symbol: {
