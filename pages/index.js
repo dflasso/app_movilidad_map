@@ -14,6 +14,7 @@ export default function Home({ destinationLatitude = -0.31435138796969286, desti
   const [currentPosition, setCurrentPosition] = useState(null)
 
   useEffect(() => {
+    const id = null
     if ("geolocation" in navigator) {
       console.log("Available");
       navigator.geolocation.getCurrentPosition(function (position) {
@@ -22,9 +23,21 @@ export default function Home({ destinationLatitude = -0.31435138796969286, desti
           longitude: position.coords.longitude
         })
       });
+      id = setInterval(() => {
+        navigator.geolocation.getCurrentPosition(function (position) {
+          setCurrentPosition({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          })
+        });
+      }, 30000)
     } else {
-      console.log("Not Available");
+      alert("Not Available Geolocation");
     }
+    return () => {
+      clearInterval(id);
+    };
+
   }, [])
 
 

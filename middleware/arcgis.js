@@ -95,12 +95,16 @@ export default function EsriMap({ id,
                     console.log(error);
                 })
             });
+
+
+
             return () => {
                 // clean up the map view
                 if (!!view) {
                     view.destroy();
                     view = null;
                 }
+                clearInterval(id)
             };
         },
         // only re-load the map if the id has changed
