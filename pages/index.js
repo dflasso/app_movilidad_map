@@ -12,6 +12,7 @@ const currentPositionInit = {
 export default function Home({ destinationLatitude = -0.31435138796969286, destinationLongitude = -78.4449847658831 }) {
 
   const [currentPosition, setCurrentPosition] = useState(null)
+  const [refresh, setRefresh] = useState(false)
 
   useEffect(() => {
     const id = null
@@ -24,11 +25,13 @@ export default function Home({ destinationLatitude = -0.31435138796969286, desti
         })
       });
       id = setInterval(() => {
+        console.log("calculo ubicación actual")
         navigator.geolocation.getCurrentPosition(function (position) {
           setCurrentPosition({
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
           })
+          setRefresh(preRefresh => !preRefresh)
         });
       }, 30000)
     } else {
@@ -67,6 +70,7 @@ export default function Home({ destinationLatitude = -0.31435138796969286, desti
         destinationLongitude={destinationLongitude}
         originLatitude={currentPosition.latitude}
         originLongitude={currentPosition.longitude}
+        refresh={refresh}
       />
 
 

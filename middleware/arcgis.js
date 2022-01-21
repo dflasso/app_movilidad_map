@@ -9,7 +9,8 @@ export default function EsriMap({ id,
     destinationLatitude = -0.31435138796969286,
     destinationLongitude = -78.4449847658831,
     originLatitude = -0.3149629224030782,
-    originLongitude = -78.44217381083543
+    originLongitude = -78.44217381083543,
+    refresh
 }) {
     // create a ref to element to be used as the map's container
     const mapEl = useRef(null);
@@ -17,6 +18,7 @@ export default function EsriMap({ id,
     // use a side effect to create the map after react has rendered the DOM
     useEffect(
         () => {
+            console.log("actualizacon mapa")
             // define the view here so it can be referenced in the clean up function
             let view;
             // the following code is based on this sample:
@@ -108,7 +110,7 @@ export default function EsriMap({ id,
             };
         },
         // only re-load the map if the id has changed
-        [id]
+        [id, refresh]
     );
     return <div style={{ height: '98vh', width: '100vw' }} ref={mapEl} />;
 }
