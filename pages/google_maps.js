@@ -39,7 +39,7 @@ export default function GoogleMapsPage({ destinationLatitude = -0.31435138796969
                         api = api + `&center=${position.coords.latitude},${position.coords.longitude}`
                         setUrlMap(api)
                     })
-                }, 30000
+                }, 5000
             )
 
             idIntervalVoiceAssistance = setInterval(
@@ -52,7 +52,7 @@ export default function GoogleMapsPage({ destinationLatitude = -0.31435138796969
                             destinyLatitude: destinationLatitude
                         })
                     })
-                }, 30000
+                }, 15000
             )
 
         } else {
