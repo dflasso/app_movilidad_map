@@ -3,6 +3,8 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import EsriMapOnlyView from '../middleware/arcgisOnlyMap'
 
+import Script from 'next/script'
+
 const currentLocationInit = {
   latitude: -0.31435138796969286,
   longitude: -78.4449847658831
@@ -16,7 +18,7 @@ export default function ArcgisCurrentLocation() {
   useEffect(() => {
     if ("geolocation" in navigator) {
       console.log("Available");
-
+      responsiveVoice.speak("Dirección desconocida.", 'Spanish Female')
       navigator.geolocation.getCurrentPosition(function (position) {
 
         setCurrentLocation({
@@ -51,6 +53,7 @@ export default function ArcgisCurrentLocation() {
 
   return (
     <div className={styles.container}>
+      {/* <Script src="https://code.responsivevoice.org/responsivevoice.js?key=gQWwqEL8"></Script> */}
       <Head>
         <title>Espe Movilidad - Ubicación Actual</title>
         <meta name="description" content="ESPE movilidad Arcgiss" />
