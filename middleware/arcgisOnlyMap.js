@@ -1,14 +1,10 @@
 import React, { useRef, useEffect } from "react";
 import { loadModules } from "esri-loader";
 
-import printRoutes from "../utils/mapView";
-
-const routeUrl = "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
+import { playVoiceCurrentLocation } from "../utils/voiceAssistant";
 
 // hooks allow us to create a map component as a function
-export default function EsriMap({ id,
-    destinationLatitude = -0.31435138796969286,
-    destinationLongitude = -78.4449847658831,
+export default function EsriMapOnlyView({ id,
     originLatitude = -0.3149629224030782,
     originLongitude = -78.44217381083543
 }) {
@@ -20,7 +16,6 @@ export default function EsriMap({ id,
         () => {
             // define the view here so it can be referenced in the clean up function
             let view;
-            let idInterval;
             // the following code is based on this sample:
             // https://developers.arcgis.com/javascript/latest/sample-code/webmap-basic/index.html
             // first lazy-load the esri classes
@@ -31,7 +26,7 @@ export default function EsriMap({ id,
                 "esri/rest/support/RouteParameters",
                 "esri/rest/support/FeatureSet"], {
                 css: true
-            }).then(([MapView, WebMap, esriConfig, Point, Graphic, route, RouteParameters, FeatureSet]) => {
+            }).then(([MapView, WebMap, esriConfig, Point, Graphic]) => {
 
                 esriConfig.apiKey = "AAPKbcd2e1a9749c4d5fa9d7d6dc214a2fafxvzExwTM46dFIafU0tei1SvBl6JBm_yd-qmm2RKQU3ng66pedho77f8bbM0T7nVD";
                 // then we load a web map from an id
@@ -48,7 +43,7 @@ export default function EsriMap({ id,
                     map: webmap,
                     // use the ref as a container
                     container: mapEl.current,
-                    center: [-78.443472, -0.314861], //Longitude, latitude
+                    center: [originLongitude, originLatitude], //Longitude, latitude
                     zoom: 16
                 });
 
@@ -57,57 +52,19 @@ export default function EsriMap({ id,
                     symbol: {
                         type: "simple-marker",
                         color: "white",
-                        size: "8px"
+                        size: "20px"
                     },
                     geometry: origin
-                });
-                const destination = new Point({ latitude: destinationLatitude, longitude: destinationLongitude })
-                const graphicDestination = new Graphic({
-                    symbol: {
-                        type: "simple-marker",
-                        color: "black",
-                        size: "8px"
-                    },
-                    geometry: destination
                 });
 
                 view.graphics.add(graphicOrigin);
 
-                view.graphics.add(graphicDestination);
-
-                const routeParams = new RouteParameters({
-                    stops: new FeatureSet({
-                        features: view.graphics.toArray()
-                    }),
-
-                    returnDirections: true
-
-                });
-
-                route.solve(routeUrl, routeParams).then((data) => {
-                    data.routeResults.forEach(function (result) {
-                        result.route.symbol = {
-                            type: "simple-line",
-                            color: [5, 150, 255],
-                            width: 3
-                        };
-                        view.graphics.add(result.route);
-                    });
-
-                }).catch(function (error) {
-                    console.log(error);
+                playVoiceCurrentLocation({
+                    destinyLatitude: originLatitude,
+                    destinyLongitude: originLongitude,
+                    originLatitude: originLatitude,
+                    originLongitude: originLongitude
                 })
-
-                idInterval = setInterval(() => {
-                    printRoutes(
-                        destinationLatitude,
-                        destinationLongitude,
-                        view,
-                        Point,
-                        Graphic, route, RouteParameters, FeatureSet
-                    )
-                }, 15000)
-
             });
 
 
@@ -117,7 +74,6 @@ export default function EsriMap({ id,
                     view.destroy();
                     view = null;
                 }
-                clearInterval(idInterval)
             };
         },
         // only re-load the map if the id has changed

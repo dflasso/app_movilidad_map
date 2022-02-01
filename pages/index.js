@@ -3,19 +3,15 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import EsriMap from '../middleware/arcgis'
 
-const currentPositionInit = {
-  latitude: -0.314861,
-  longitude: -78.443472
-}
-
 
 export default function Home({ destinationLatitude = -0.31435138796969286, destinationLongitude = -78.4449847658831 }) {
 
   const [geolocationAvailable, setGeolocationAvailable] = useState(false)
-  const [refresh, setRefresh] = useState(false)
+
 
   useEffect(() => {
     const id = null
+    responsiveVoice.speak("Viaje iniciado", 'Spanish Female');
     if ("geolocation" in navigator) {
       console.log("Available");
       setGeolocationAvailable(true)

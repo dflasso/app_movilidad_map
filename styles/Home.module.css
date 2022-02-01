@@ -24,3 +24,9 @@
   justify-content: center;
   align-items: center;
 }
+
+
+.mapViewGoogleMaps {
+  height: 99vh;
+  width: 100%;
+}

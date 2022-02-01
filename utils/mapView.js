@@ -1,4 +1,7 @@
+import { playVoiceAssintant } from "./voiceAssistant";
+
 const routeUrl = "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
+
 
 export default function printMapVire(
     destinationLatitude = -0.31435138796969286,
@@ -57,6 +60,12 @@ export default function printMapVire(
                     width: 3
                 };
                 view.graphics.add(result.route);
+                playVoiceAssintant({
+                    originLongitude: currentPosition.longitude,
+                    originLatitude: currentPosition.latitude,
+                    destinyLongitude: destinationLongitude,
+                    destinyLatitude: destinationLatitude
+                })
             });
 
         }).catch(function (error) {
