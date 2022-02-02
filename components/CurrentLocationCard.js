@@ -1,28 +1,26 @@
 import { useEffect, useState } from "react"
 
+let longitude = 0.0
+let latitude = 0.0
+
 export default function CurrentLocationCard() {
-    const [coords, setCoords] = useState({
-        longitude: 0.0,
-        latitude: 0.0
-    })
 
     useEffect(() => {
         let idInterval = null
         if ("geolocation" in navigator) {
 
             navigator.geolocation.getCurrentPosition(function (position) {
-                setCoords({
-                    longitude: position.coords.longitude,
-                    latitude: position.coords.latitude
-                })
+                longitude = position.coords.longitude
+                latitude = position.coords.latitude
+                alert(`${longitude} ${longitude}`)
             })
 
             setInterval(() => {
                 navigator.geolocation.getCurrentPosition(function (position) {
-                    setCoords({
-                        longitude: position.coords.longitude,
-                        latitude: position.coords.latitude
-                    })
+
+                    longitude = position.coords.longitude
+                    latitude = position.coords.latitude
+                    alert(`${longitude} ${longitude}`)
                 })
             }, 5000)
         }
@@ -32,14 +30,6 @@ export default function CurrentLocationCard() {
 
     return (
         <section>
-            <div>
-                <label>Latitud</label>
-                <input value={coords.latitude} />
-            </div>
-            <div>
-                <label>Longitud</label>
-                <input value={coords.longitude} />
-            </div>
         </section>
     )
 }
