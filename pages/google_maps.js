@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { playVoiceAssintant } from "../utils/voiceAssistant";
+import CurrentLocationCard from '../components/CurrentLocationCard';
 
 const urlBase = "https://www.google.com/maps/embed/v1/directions?key=AIzaSyD08wAcsWg_pXQ04M2i-l9XpqX3gopb6U8"
 
@@ -77,6 +78,7 @@ export default function GoogleMapsPage({ destinationLatitude = -0.31435138796969
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main className={styles.container}>
+                <CurrentLocationCard />
                 <iframe
                     className={styles.mapViewGoogleMaps}
                     loading="lazy"
