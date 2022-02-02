@@ -78,7 +78,7 @@ export default function GoogleMapsPage({ destinationLatitude = -0.31435138796969
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main className={styles.container}>
-                <CurrentLocationCard />
+                {/* <CurrentLocationCard /> */}
                 <iframe
                     className={styles.mapViewGoogleMaps}
                     loading="lazy"
