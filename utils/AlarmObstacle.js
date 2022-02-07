@@ -59,7 +59,7 @@ export function checkObstacles({ originLongitude = 0.0, originLatitude = 0.0 }) 
 
 
 export function playAlarmObstacle() {
-    const alarmSound = new Audio("/Alarm-Slow-A3.mp3")
+    const alarmSound = new Audio("/alarma_obstaculos.mp3")
     alarmSound.play()
 
     setTimeout(() => {

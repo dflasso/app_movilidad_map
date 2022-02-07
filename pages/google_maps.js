@@ -52,7 +52,7 @@ export default function GoogleMapsPage({ destinationLatitude = -0.31435138796969
                         //     originLongitude: -78.4434267
                         // })
 
-                        console.log(`${position.coords.latitude}     ${position.coords.longitude}`)
+                        // console.log(`${position.coords.latitude}     ${position.coords.longitude}`)
 
                         if (existObstacle) {
                             playAlarmObstacle()
