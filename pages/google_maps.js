@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { playVoiceAssintant } from "../utils/voiceAssistant";
-import CurrentLocationCard from '../components/CurrentLocationCard';
+
+import { checkObstacles, playAlarmObstacle } from "../utils/AlarmObstacle";
 
 const urlBase = "https://www.google.com/maps/embed/v1/directions?key=AIzaSyD08wAcsWg_pXQ04M2i-l9XpqX3gopb6U8"
 
@@ -13,6 +14,7 @@ export default function GoogleMapsPage({ destinationLatitude = -0.31435138796969
     useEffect(() => {
         let idIntervalVoiceAssistance = null
         let idIntervalGoogleMaps = null
+        let existObstacle = false
         if ("geolocation" in navigator) {
             console.log("Available");
 
@@ -39,8 +41,24 @@ export default function GoogleMapsPage({ destinationLatitude = -0.31435138796969
                         api = api + `&zoom=18`
                         api = api + `&center=${position.coords.latitude},${position.coords.longitude}`
                         setUrlMap(api)
+
+                        existObstacle = checkObstacles({
+                            originLatitude: position.coords.latitude,
+                            originLongitude: position.coords.longitude
+                        })
+
+                        // existObstacle = checkObstacles({
+                        //     originLatitude: -0.3142658,
+                        //     originLongitude: -78.4434267
+                        // })
+
+                        console.log(`${position.coords.latitude}     ${position.coords.longitude}`)
+
+                        if (existObstacle) {
+                            playAlarmObstacle()
+                        }
                     })
-                }, 5000
+                }, 10000
             )
 
             idIntervalVoiceAssistance = setInterval(

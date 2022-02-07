@@ -49,7 +49,6 @@ export default function ArcgisCurrentLocation() {
     )
   }
 
-  console.log(currentLocation)
 
   return (
     <div className={styles.container}>
