@@ -18,7 +18,6 @@ export default function ArcgisCurrentLocation() {
   useEffect(() => {
     if ("geolocation" in navigator) {
       console.log("Available");
-      responsiveVoice.speak("Dirección desconocida.", 'Spanish Female')
       navigator.geolocation.getCurrentPosition(function (position) {
 
         setCurrentLocation({
