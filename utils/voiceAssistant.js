@@ -55,7 +55,7 @@ export function playVoiceCurrentLocation({ originLatitude = 0.0, originLongitude
             data => {
                 try {
                     if (data.status === "ZERO_RESULTS") {
-                        responsiveVoice.speak("Dirección desconocida.", 'Spanish Female')
+                        console.log("direccion desconocida")
                     } else {
 
                         const route = data.routes[0]

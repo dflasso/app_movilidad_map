@@ -4,6 +4,8 @@ import styles from '../styles/Home.module.css'
 import { playVoiceAssintant } from "../utils/voiceAssistant";
 
 import { checkObstacles, playAlarmObstacle } from "../utils/AlarmObstacle";
+import { Fab } from '@mui/material';
+import { Navigation } from '@mui/icons-material';
 
 const urlBase = "https://www.google.com/maps/embed/v1/directions?key=AIzaSyD08wAcsWg_pXQ04M2i-l9XpqX3gopb6U8"
 
@@ -16,9 +18,10 @@ export default function GoogleMapsPage({ destinationLatitude = -0.31435138796969
         let idIntervalGoogleMaps = null
         let existObstacle = false
         if ("geolocation" in navigator) {
-            console.log("Available");
+
 
             navigator.geolocation.getCurrentPosition(function (position) {
+                console.log("Available");
                 setaviableGeolocation(true)
                 let api = urlBase
                 api = api + `&origin=${position.coords.latitude},${position.coords.longitude}`
@@ -30,9 +33,18 @@ export default function GoogleMapsPage({ destinationLatitude = -0.31435138796969
                 setUrlMap(api)
             })
 
-            idIntervalGoogleMaps = setInterval(
+
+
+            idIntervalVoiceAssistance = setInterval(
                 () => {
                     navigator.geolocation.getCurrentPosition(function (position) {
+                        playVoiceAssintant({
+                            originLongitude: position.coords.longitude,
+                            originLatitude: position.coords.latitude,
+                            destinyLongitude: destinationLongitude,
+                            destinyLatitude: destinationLatitude
+                        })
+
                         let api = urlBase
                         api = api + `&origin=${position.coords.latitude},${position.coords.longitude}`
                         api = api + `&destination=${destinationLatitude},${destinationLongitude}`
@@ -58,19 +70,6 @@ export default function GoogleMapsPage({ destinationLatitude = -0.31435138796969
                             playAlarmObstacle()
                         }
                     })
-                }, 10000
-            )
-
-            idIntervalVoiceAssistance = setInterval(
-                () => {
-                    navigator.geolocation.getCurrentPosition(function (position) {
-                        playVoiceAssintant({
-                            originLongitude: position.coords.longitude,
-                            originLatitude: position.coords.latitude,
-                            destinyLongitude: destinationLongitude,
-                            destinyLatitude: destinationLatitude
-                        })
-                    })
                 }, 15000
             )
 
@@ -82,6 +81,19 @@ export default function GoogleMapsPage({ destinationLatitude = -0.31435138796969
             clearInterval(idIntervalGoogleMaps)
         };
     }, []);
+
+    const handleClickNavigation = () => {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            let api = urlBase
+            api = api + `&origin=${position.coords.latitude},${position.coords.longitude}`
+            api = api + `&destination=${destinationLatitude},${destinationLongitude}`
+            api = api + `&mode=walking`
+            api = api + `&language=es-419`
+            api = api + `&zoom=18`
+            api = api + `&center=${position.coords.latitude},${position.coords.longitude}`
+            window.open(api)
+        })
+    }
 
     if (!aviableGeolocation) {
         return <h1>Solicitando acceso a la ubicación actual...</h1>
@@ -102,6 +114,9 @@ export default function GoogleMapsPage({ destinationLatitude = -0.31435138796969
                     loading="lazy"
                     src={urlMap}>
                 </iframe>
+                <Fab sx={{ position: 'fixed', bottom: 130, right: 16 }} aria-label="navigate" color="primary" onClick={handleClickNavigation} >
+                    <Navigation />
+                </Fab>
             </main>
         </div>);
 }
