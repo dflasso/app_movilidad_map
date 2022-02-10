@@ -16,6 +16,7 @@ export default function GoogleMapsPage({ destinationLatitude = -0.31435138796969
     useEffect(() => {
         let idIntervalVoiceAssistance = null
         let idIntervalGoogleMaps = null
+        let idIntervalObstacle = null
         let existObstacle = false
         if ("geolocation" in navigator) {
 
@@ -33,6 +34,20 @@ export default function GoogleMapsPage({ destinationLatitude = -0.31435138796969
                 setUrlMap(api)
             })
 
+            idIntervalObstacle = setInterval(() => {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    existObstacle = checkObstacles({
+                        originLatitude: position.coords.latitude,
+                        originLongitude: position.coords.longitude
+                    })
+
+                    // console.log(`${position.coords.latitude}     ${position.coords.longitude}`)
+
+                    if (existObstacle) {
+                        playAlarmObstacle()
+                    }
+                })
+            }, 1000)
 
 
             idIntervalVoiceAssistance = setInterval(
@@ -54,21 +69,7 @@ export default function GoogleMapsPage({ destinationLatitude = -0.31435138796969
                         api = api + `&center=${position.coords.latitude},${position.coords.longitude}`
                         setUrlMap(api)
 
-                        existObstacle = checkObstacles({
-                            originLatitude: position.coords.latitude,
-                            originLongitude: position.coords.longitude
-                        })
 
-                        // existObstacle = checkObstacles({
-                        //     originLatitude: -0.3142658,
-                        //     originLongitude: -78.4434267
-                        // })
-
-                        // console.log(`${position.coords.latitude}     ${position.coords.longitude}`)
-
-                        if (existObstacle) {
-                            playAlarmObstacle()
-                        }
                     })
                 }, 15000
             )
@@ -79,6 +80,7 @@ export default function GoogleMapsPage({ destinationLatitude = -0.31435138796969
 
         return () => {
             clearInterval(idIntervalGoogleMaps)
+            clearInterval(idIntervalObstacle)
         };
     }, []);
 
